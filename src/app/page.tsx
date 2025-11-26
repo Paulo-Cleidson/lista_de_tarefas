@@ -14,6 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export default function Home() {
   return (
@@ -40,7 +41,20 @@ export default function Home() {
               <div className='w-1 h-full bg-green-300'></div>
               <p className='flex-1 px-2 text-sm'>Estudar React</p>
               <div className='flex items-center gap-3'>
-                <SquarePen size={16} className='cursor-pointer'/>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <SquarePen size={16} className='cursor-pointer'/>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Editar Tarefa</DialogTitle>
+                    </DialogHeader>
+                    <div className='flex gap-2'>
+                      <Input placeholder='Editar Tarefa'/>
+                      <Button>Editar</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
                 <Trash size={16} className='cursor-pointer'/>
               </div>
             </div>
