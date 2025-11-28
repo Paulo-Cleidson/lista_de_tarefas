@@ -1,17 +1,19 @@
-# {Nome do Projeto} - Web II
+# Lista De Tarefas - Web II
 
 ## Equipe
-- Nome Completo do Aluno 1
-- Nome Completo do Aluno 2
-- Nome Completo do Aluno 3
+- Paulo Cleidson
+- Ruthe Nobrega
+- Thiago Araujo
 
 ## Descrição
-Descrição concisa do que o sistema faz e qual problema resolve.
+Este projeto é uma aplicação de lista de tarefas desenvolvida para auxiliar usuários na organização de suas atividades diárias. O sistema permite adicionar, visualizar, editar e remover tarefas de forma simples e eficiente, oferecendo uma experiência prática para o acompanhamento de pendências.
+
+A solução foi criada para resolver o problema comum de perda de controle sobre afazeres, centralizando todas as tarefas em um único ambiente intuitivo e acessível. Com isso, o usuário consegue gerenciar melhor o tempo, manter o foco e aumentar sua produtividade no dia a dia.
 
 ## Tecnologias
 - Next.js 14+ (App Router)
 - MongoDB Atlas & Mongoose
-- HeroUI (NextUI) & Tailwind CSS
+- HeroUI (NextUI), Shadcn & Tailwind CSS
 - {Biblioteca de Auth usada}
 
 ## Funcionalidades
