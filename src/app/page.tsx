@@ -1,9 +1,10 @@
+'use client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { Plus, List, Check, BadgeX, SquarePen, Trash, ListCheck, Sigma } from 'lucide-react';
+import { Plus, List, Check, BadgeX, Trash, ListCheck, Sigma } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,15 +15,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import EditTask from '@/components/edit-task';
+import { useState } from 'react';
 
 export default function Home() {
+
+  // Captura o valor do input de cadastro
+  const [task, setTask] = useState<string>('')
+  console.log(task)
+
   return (
     <main className='w-full h-screen bg-gray-100 flex justify-center items-center'>
       <Card className='w-lg p-4'>
 
         <CardHeader className='flex gap-2'>
-          <Input placeholder='Adicionar Tarefa'/>
+          <Input placeholder='Adicionar Tarefa' onChange={(e) => setTask(e.target.value)}/>
           <Button> <Plus/> Cadastrar </Button>
         </CardHeader>
 
@@ -41,20 +48,7 @@ export default function Home() {
               <div className='w-1 h-full bg-green-300'></div>
               <p className='flex-1 px-2 text-sm'>Estudar React</p>
               <div className='flex items-center gap-3'>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <SquarePen size={16} className='cursor-pointer'/>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Editar Tarefa</DialogTitle>
-                    </DialogHeader>
-                    <div className='flex gap-2'>
-                      <Input placeholder='Editar Tarefa'/>
-                      <Button>Editar</Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <EditTask/>
                 <Trash size={16} className='cursor-pointer'/>
               </div>
             </div>
