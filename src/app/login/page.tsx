@@ -27,7 +27,7 @@ export default function LoginPage() {
     if (res?.error) {
       setError("Email ou senha inválidos");
     } else {
-      router.push("/dashboard");
+      router.push("/task");
     }
   }
 

@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Input } from './ui/input';
 
-const EditTask = () => {
+const EditTaskForm = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -22,4 +22,4 @@ const EditTask = () => {
     )
 }
 
-export default EditTask
+export default EditTaskForm

@@ -15,23 +15,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import EditTask from '@/components/edit-task';
-import { useState } from 'react';
+import EditTaskForm from '@/components/EditTaskFrom';
+import AddTaskForm from '@/components/AddTaskForm';
 
 export default function Home() {
-
-  // Captura o valor do input de cadastro
-  const [task, setTask] = useState<string>('')
-  console.log(task)
 
   return (
     <main className='w-full h-screen bg-gray-100 flex justify-center items-center'>
       <Card className='w-lg p-4'>
 
-        <CardHeader className='flex gap-2'>
-          <Input placeholder='Adicionar Tarefa' onChange={(e) => setTask(e.target.value)}/>
-          <Button> <Plus/> Cadastrar </Button>
-        </CardHeader>
+        <AddTaskForm />
 
         <CardContent>
           <Separator className='mb-4'/>
@@ -48,7 +41,7 @@ export default function Home() {
               <div className='w-1 h-full bg-green-300'></div>
               <p className='flex-1 px-2 text-sm'>Estudar React</p>
               <div className='flex items-center gap-3'>
-                <EditTask/>
+                <EditTaskForm/>
                 <Trash size={16} className='cursor-pointer'/>
               </div>
             </div>
