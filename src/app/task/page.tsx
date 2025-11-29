@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { List, Check, BadgeX, Trash, ListCheck, Sigma } from "lucide-react";
 import {
@@ -19,6 +19,7 @@ import AddTaskForm from "@/components/AddTaskForm";
 import { getTask, deleteTask } from "../actions";
 import { useEffect, useState } from "react";
 import { ITask } from "@/types/Task";
+import { signOut } from "next-auth/react";
 
 export default function Home() {
   const [taskList, setTaskList] = useState<ITask[]>([]);
@@ -48,24 +49,31 @@ export default function Home() {
 
   return (
     <main className="w-full h-screen bg-gray-100 flex justify-center items-center">
+
       <Card className="w-lg p-4">
-        <AddTaskForm onTaskAdded={handleRefreshTasks} />
+
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <Button variant="link" onClick={() => signOut({ callbackUrl: "/login" })}>Sair</Button>
+          </div>
+          <CardTitle className="text-xl">Suas Tarefas</CardTitle>
+          <div className="w-16"/>
+        </div>
+
+        <AddTaskForm onTaskAdded={handleRefreshTasks}/>
 
         <CardContent>
           <Separator className="mb-4" />
 
           <div className="flex gap-2">
             <Badge className="cursor-pointer" variant="default">
-              {" "}
-              <List /> Todas{" "}
+              <List /> Todas
             </Badge>
             <Badge className="cursor-pointer" variant="outline">
-              {" "}
-              <BadgeX /> Não Finalizadas{" "}
+              <BadgeX /> Não Finalizadas
             </Badge>
             <Badge className="cursor-pointer" variant="outline">
-              {" "}
-              <Check /> Concluidas{" "}
+              <Check /> Concluidas
             </Badge>
           </div>
 
