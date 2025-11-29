@@ -8,6 +8,26 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+export async function registerUser(formData: FormData) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!name || !email || !password) return { error: "Preencha tudo!" };
+
+  await dbConnect();
+
+  // Verifica se já existe
+  const existingUser = await User.findOne({ email });
+  if (existingUser) return { error: "Email já cadastrado" };
+
+  // Cria hash da senha
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await User.create({ name, email, password: hashedPassword });
+  return { success: true };
+}
+
 export async function addTarefa(formData: FormData) {
   const session = await getServerSession(authOptions);
   if (!session) return { error: "Não Autorizado" };
@@ -30,22 +50,21 @@ export async function addTarefa(formData: FormData) {
 
 }
 
-export async function registerUser(formData: FormData) {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+export async function getTask() {
+  const session = await getServerSession(authOptions);
+  if (!session) return { error: "Não Autorizado" };
 
-  if (!name || !email || !password) return { error: "Preencha tudo!" };
+  const user = session.user as { id: string };
 
   await dbConnect();
 
-  // Verifica se já existe
-  const existingUser = await User.findOne({ email });
-  if (existingUser) return { error: "Email já cadastrado" };
+  const tasks = await Task.find({ usuarioId: user.id }).lean();
 
-  // Cria hash da senha
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const serialized = tasks.map(t => ({
+    ...t,
+    _id: t._id.toString(),
+  }));
 
-  await User.create({ name, email, password: hashedPassword });
-  return { success: true };
+  console.log(tasks)
+  return { serialized };
 }

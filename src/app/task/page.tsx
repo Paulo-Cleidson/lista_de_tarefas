@@ -1,10 +1,9 @@
-'use client';
+'use client'
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Plus, List, Check, BadgeX, Trash, ListCheck, Sigma } from 'lucide-react';
+import { List, Check, BadgeX, Trash, ListCheck, Sigma } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,8 +16,36 @@ import {
 } from "@/components/ui/alert-dialog"
 import EditTaskForm from '@/components/EditTaskFrom';
 import AddTaskForm from '@/components/AddTaskForm';
+import { getTask } from '../actions';
+import { useEffect, useState } from 'react';
+import { ITask } from '@/types/Task';
 
 export default function Home() {
+
+  const [taskList, setTaskList] = useState<ITask[]>([])
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const result = await getTask();
+      if (!result) return;
+      if("error" in result) {
+        console.error(result.error);
+        return;
+      }
+      setTaskList(result.serialized);
+    };
+    fetchTasks();
+  }, [])
+
+  const handleRefreshTasks = async () => {
+    const result = await getTask()
+    if (!result) return
+    if("error" in result) {
+      console.error(result.error);
+      return;
+    }
+    setTaskList(result.serialized)
+  }
 
   return (
     <main className='w-full h-screen bg-gray-100 flex justify-center items-center'>
@@ -36,16 +63,16 @@ export default function Home() {
           </div>
 
           <div className='mt-4 border-b'>
-
-            <div className='h-14 flex justify-between items-center border-t'>
-              <div className='w-1 h-full bg-green-300'></div>
-              <p className='flex-1 px-2 text-sm'>Estudar React</p>
-              <div className='flex items-center gap-3'>
-                <EditTaskForm/>
-                <Trash size={16} className='cursor-pointer'/>
+            {taskList.map(task => (
+              <div className='h-14 flex justify-between items-center border-t' key={ task._id }>
+                <div className='w-1 h-full bg-green-300'></div>
+                <p className='flex-1 px-2 text-sm'>{task.tarefa}</p>
+                <div className='flex items-center gap-3'>
+                  <EditTaskForm/>
+                  <Trash size={16} className='cursor-pointer'/>
+                </div>
               </div>
-            </div>
-
+            ))}
           </div>
 
           <div className='flex justify-between mt-4'>

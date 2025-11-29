@@ -6,5 +6,5 @@ const TaskSchema = new Schema({
   usuarioId: { type: String, required: true },
 }, { timestamps: true });
 
-const Task = models.task || model("Task", TaskSchema);
+const Task = models.Task || model("Task", TaskSchema);
 export default Task;
