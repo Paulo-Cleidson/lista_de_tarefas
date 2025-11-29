@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { List, Check, BadgeX, Trash, ListCheck, Sigma } from "lucide-react";
 import {
@@ -19,7 +19,7 @@ import AddTaskForm from "@/components/AddTaskForm";
 import { getTask, deleteTask } from "../actions";
 import { useEffect, useState } from "react";
 import { ITask } from "@/types/Task";
-import { signOut } from "next-auth/react";
+import { toast } from "sonner";
 
 export default function Home() {
   const [taskList, setTaskList] = useState<ITask[]>([]);
@@ -47,20 +47,39 @@ export default function Home() {
     setTaskList(result.serialized);
   };
 
+  const handleToggleTask = async (taskId: string) => {
+    console.log(taskList)
+
+    const priviousTasks = [...taskList]
+    console.log(priviousTasks)
+
+    setTaskList((prev) => {
+      const updatedTaskList = prev.map(task => {
+        if (task._id === taskId) {
+          return {
+            ...task,
+            done: !task.done
+          }
+        } else {
+          return task
+        }
+      })
+
+      return updatedTaskList
+
+    })
+
+
+  }
+
   return (
-    <main className="w-full h-screen bg-gray-100 flex justify-center items-center">
-
+    <main className="w-full h-screen bg-background flex justify-center items-start mt-8">
       <Card className="w-lg p-4">
-
         <div className="flex items-center justify-between mb-4">
-          <div>
-            <Button variant="link" onClick={() => signOut({ callbackUrl: "/login" })}>Sair</Button>
-          </div>
-          <CardTitle className="text-xl">Suas Tarefas</CardTitle>
-          <div className="w-16"/>
+          <CardTitle className="text-2xl">Suas Tarefas</CardTitle>
         </div>
 
-        <AddTaskForm onTaskAdded={handleRefreshTasks}/>
+        <AddTaskForm onTaskAdded={handleRefreshTasks} />
 
         <CardContent>
           <Separator className="mb-4" />
@@ -83,8 +102,18 @@ export default function Home() {
                 className="h-14 flex justify-between items-center border-t"
                 key={task._id}
               >
-                <div className="w-1 h-full bg-green-300"></div>
-                <p className="flex-1 px-2 text-sm">{task.tarefa}</p>
+                <div
+                  className={`${
+                    task.done
+                      ? "w-1 h-full bg-green-400"
+                      : "w-1 h-full bg-red-400"
+                  }`}
+                ></div>
+                <p className="flex-1 px-2 text-sm cursor-pointer hover: text-gray-900"
+                onClick={() => handleToggleTask(task._id)}
+                >
+                  {task.tarefa}
+                </p>
                 <div className="flex items-center gap-3">
                   <EditTaskForm
                     task={task}
@@ -95,6 +124,7 @@ export default function Home() {
                     action={async () => {
                       await deleteTask(task._id);
                       await handleRefreshTasks();
+                      toast.warning("Tarefa excluida com sucesso!");
                     }}
                   >
                     <button type="submit">

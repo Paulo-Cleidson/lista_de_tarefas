@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type AddTaskFormProps = {
   onTaskAdded?: () => void;
@@ -24,6 +25,7 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
     } else {
       ref.current?.reset();
       setTask("");
+      toast.success("Tarefa adicionada com sucesso!")
       if (onTaskAdded) onTaskAdded();
     }
   }
