@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useRef } from "react";
 import { addTarefa } from "@/app/actions";
@@ -8,8 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export default function AddTaskForm() {
+type AddTaskFormProps = {
+  onTaskAdded?: () => void;
+};
 
+export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
   const [task, setTask] = useState("");
   const ref = useRef<HTMLFormElement>(null);
 
@@ -21,6 +24,7 @@ export default function AddTaskForm() {
     } else {
       ref.current?.reset();
       setTask("");
+      if (onTaskAdded) onTaskAdded();
     }
   }
 
@@ -30,12 +34,12 @@ export default function AddTaskForm() {
         <Input
           name="tarefa"
           placeholder="Adicionar Tarefa"
-          onChange={e => setTask(e.target.value)}
+          onChange={(e) => setTask(e.target.value)}
           required
         />
 
         <Button type="submit">
-          <Plus className="mr-2"/> Cadastrar
+          <Plus className="mr-2" /> Cadastrar
         </Button>
       </CardHeader>
     </form>

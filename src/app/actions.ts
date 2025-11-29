@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import dbConnect from "@/lib/db";
 import User from "@/models/User";
@@ -35,19 +35,18 @@ export async function addTarefa(formData: FormData) {
   const user = session.user as { id: string };
 
   const tarefa = formData.get("tarefa");
-  if (!tarefa) return { error: "Tarefa não pode ser vazia" }
+  if (!tarefa) return { error: "Tarefa não pode ser vazia" };
 
   await dbConnect();
 
   await Task.create({
     tarefa,
     done: false,
-    usuarioId: user.id
+    usuarioId: user.id,
   });
 
   revalidatePath("/task");
   return { success: true };
-
 }
 
 export async function getTask() {
@@ -60,11 +59,47 @@ export async function getTask() {
 
   const tasks = await Task.find({ usuarioId: user.id }).lean();
 
-  const serialized = tasks.map(t => ({
+  const serialized = tasks.map((t) => ({
     ...t,
     _id: t._id.toString(),
   }));
 
-  console.log(tasks)
   return { serialized };
+}
+
+export async function deleteTask(taskId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) return { error: "Não Autorizado" };
+
+  const user = session.user as { id: string };
+
+  await dbConnect();
+
+  const task = await Task.findOne({ _id: taskId, usuarioId: user.id });
+  if (!task) return { error: "Tarefa não encontrada" };
+
+  await Task.deleteOne({ _id: taskId });
+
+  revalidatePath("/task");
+  return { success: true };
+}
+
+export async function updateTask(taskId: string, formData: FormData) {
+  const session = await getServerSession(authOptions);
+  if (!session) return { error: "Não Autorizado" };
+
+  const user = session.user as { id: string };
+
+  const tarefa = formData.get("tarefa") as string;
+  const done = formData.get("done") === "true";
+
+  await dbConnect();
+
+  const task = await Task.findOne({ _id: taskId, usuarioId: user.id });
+  if (!task) return { error: "Tarefa não encontrada" };
+
+  await Task.updateOne({ _id: taskId }, { tarefa, done });
+
+  revalidatePath("/task");
+  return { success: true };
 }

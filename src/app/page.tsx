@@ -1,4 +1,4 @@
-import { getServerSession } from "next-auth"
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -11,15 +11,13 @@ export default async function Home() {
   }
 
   return (
-
-    <div 
-    className="
+    <div
+      className="
     flex h-screen w-full items-center justify-center bg-linear-to-b from-orange-900
     via-orange-700 to-orange-600 px-4
     "
     >
       <div className="w-full max-w-md rounded-2xl bg-white/90 p-10 shadow-2xl backdrop-blur-md">
-        
         <h1 className="text-4xl font-bold text-gray-900 text-center">
           Lista de Tarefas
         </h1>
@@ -44,6 +42,5 @@ export default async function Home() {
         </div>
       </div>
     </div>
-
   );
 }
