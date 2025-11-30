@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Trash, ListCheck, Sigma, BookOpenCheck } from "lucide-react";
+import { Trash, ListCheck, Sigma, BookOpenCheck, Check } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,7 +15,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import EditTaskForm from "@/components/EditTaskFrom";
 import AddTaskForm from "@/components/AddTaskForm";
-import { getTask, deleteTask, updateTaskStatus } from "../actions";
+import {
+  getTask,
+  deleteTask,
+  updateTaskStatus,
+  deleteCompletedtasks,
+} from "../actions";
 import { useEffect, useState } from "react";
 import { ITask } from "@/types/Task";
 import { toast } from "sonner";
@@ -85,6 +90,18 @@ export default function Home() {
     }
   })();
 
+  const clearComplitedTasks = async () => {
+    const deletedTasks = await deleteCompletedtasks();
+    if (!deletedTasks) return;
+    if ('error' in deletedTasks) {
+        console.error(deletedTasks.error);
+        toast.error("Erro no servidor ao limpar tarefas concluídas.");
+        return;
+    }
+    setTaskList(deletedTasks);
+    toast.success("Tarefas excluidas foram removidas!");
+  };
+
   return (
     <main className="w-full h-screen bg-background flex justify-center items-start mt-8">
       <Card className="w-lg p-4">
@@ -118,12 +135,17 @@ export default function Home() {
                 <div
                   className={`${
                     task.done
-                      ? "w-1 h-full bg-green-400"
-                      : "w-1 h-full bg-red-400"
+                      ? "w-1 h-full bg-green-500"
+                      : "w-1 h-full bg-red-500"
                   }`}
                 ></div>
+                {task.done && <Check  className="text-green-600"/>}
                 <p
-                  className="flex-1 px-2 text-lg cursor-pointer hover:text-orange-500"
+                  className={`${
+                    task.done
+                      ? "line-through"
+                      : ""
+                  } flex-1 px-2 text-base cursor-pointer hover:text-orange-500 min-w-0 break-all`}
                   onClick={() => handleToggleTask(task._id)}
                 >
                   {task.tarefa}
@@ -144,7 +166,7 @@ export default function Home() {
                     <button type="submit">
                       <Trash
                         size={16}
-                        className="cursor-pointer text-red-500"
+                        className="cursor-pointer text-red-600"
                       />
                     </button>
                   </form>
@@ -155,7 +177,7 @@ export default function Home() {
 
           <div className="flex justify-between mt-4">
             <div className="flex gap-2 items-center">
-              <ListCheck size={18} />
+              <ListCheck size={18} className="text-green-600"/>
               <p className="text-sx">
                 Tarefas Concluídas (
                 {taskList.filter((task) => task.done).length}/{taskList.length})
@@ -171,12 +193,19 @@ export default function Home() {
               <AlertDialogContent className="bg-zinc-100 dark:bg-zinc-900">
                 <AlertDialogHeader>
                   <AlertDialogTitle>
-                    Tem certeza que deseja excluir x itens?
+                    Tem certeza que deseja excluir {taskList.filter((task) => task.done).length} itens?
                   </AlertDialogTitle>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogAction>Sim</AlertDialogAction>
-                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="cursor-pointer"
+                    onClick={clearComplitedTasks}
+                  >
+                    Sim
+                  </AlertDialogAction>
+                  <AlertDialogCancel className="cursor-pointer">
+                    Cancelar
+                  </AlertDialogCancel>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -184,8 +213,15 @@ export default function Home() {
 
           <div className="h-2 w-full bg-gray-100 mt-4 rounded-md">
             <div
-              className="h-full bg-blue-500 rounded-md"
-              style={{ width: "50%" }}
+              className="h-full bg-primary rounded-md"
+              style={{
+                width: `${
+                  taskList.length === 0
+                    ? 0
+                    : (taskList.filter((task) => task.done).length /
+                        taskList.length) * 100
+                }%`,
+              }}
             ></div>
           </div>
 
