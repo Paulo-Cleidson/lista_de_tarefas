@@ -98,8 +98,35 @@ export async function updateTask(taskId: string, formData: FormData) {
   const task = await Task.findOne({ _id: taskId, usuarioId: user.id });
   if (!task) return { error: "Tarefa não encontrada" };
 
+  if (task.tarefa === tarefa) {
+    return { info: "Nada foi alterado" };
+  }
+
   await Task.updateOne({ _id: taskId }, { tarefa, done });
 
   revalidatePath("/task");
   return { success: true };
+}
+
+export async function updateTaskStatus(taskId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) return { error: "Não Autorizado" };
+
+  const user = session.user as { id: string };
+  await dbConnect();
+
+  const currentTask = await Task.findOne({
+    _id: taskId,
+    usuarioId: user.id,
+  }).lean();
+
+  if (!currentTask) return { error: "Tarefa não encontrada" };
+
+  const updatedStatus = await Task.updateOne(
+    { _id: taskId },
+    { done: !currentTask.done }
+  );
+
+  if (!updatedStatus) return;
+  return updatedStatus;
 }

@@ -25,10 +25,17 @@ const EditTaskForm = ({ task, onTaskUpdated }: Props) => {
   const [newText, setNewText] = useState(task.tarefa);
 
   const handleSubmit = async (formData: FormData) => {
-    await updateTask(task._id, formData);
-    onTaskUpdated();
-    setOpen(false);
-    toast.success("Tarefa editada com sucesso!");
+    const result = await updateTask(task._id, formData);
+
+    if (result?.info) {
+      toast.info(result.info);
+    } else if (result?.success) {
+      toast.success("Tarefa editada com sucesso!");
+      onTaskUpdated();
+      setOpen(false);
+    } else if (result?.error) {
+      toast.error(result.error);
+    }
   };
 
   return (
@@ -37,7 +44,7 @@ const EditTaskForm = ({ task, onTaskUpdated }: Props) => {
         <SquarePen size={16} className="cursor-pointer" />
       </DialogTrigger>
 
-      <DialogContent className="bg-white dark:bg-zinc-900">
+      <DialogContent className="bg-zinc-100 dark:bg-zinc-900">
         <DialogHeader>
           <DialogTitle>Editar Tarefa</DialogTitle>
         </DialogHeader>

@@ -1,9 +1,8 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { List, Check, BadgeX, Trash, ListCheck, Sigma } from "lucide-react";
+import { Trash, ListCheck, Sigma, BookOpenCheck } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,13 +15,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import EditTaskForm from "@/components/EditTaskFrom";
 import AddTaskForm from "@/components/AddTaskForm";
-import { getTask, deleteTask } from "../actions";
+import { getTask, deleteTask, updateTaskStatus } from "../actions";
 import { useEffect, useState } from "react";
 import { ITask } from "@/types/Task";
 import { toast } from "sonner";
+import Filter from "@/components/Filter";
+import { FilterType } from "@/components/Filter";
 
 export default function Home() {
   const [taskList, setTaskList] = useState<ITask[]>([]);
+  const [currentFilter, setCurrentFilter] = useState<FilterType>("all");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -48,34 +50,46 @@ export default function Home() {
   };
 
   const handleToggleTask = async (taskId: string) => {
-    console.log(taskList)
-
-    const priviousTasks = [...taskList]
-    console.log(priviousTasks)
-
-    setTaskList((prev) => {
-      const updatedTaskList = prev.map(task => {
-        if (task._id === taskId) {
-          return {
-            ...task,
-            done: !task.done
+    const priviousTasks = [...taskList];
+    try {
+      setTaskList((prev) => {
+        const updatedTaskList = prev.map((task) => {
+          if (task._id === taskId) {
+            return {
+              ...task,
+              done: !task.done,
+            };
+          } else {
+            return task;
           }
-        } else {
-          return task
-        }
-      })
+        });
+        return updatedTaskList;
+      });
 
-      return updatedTaskList
+      await updateTaskStatus(taskId);
+    } catch (error) {
+      setTaskList(priviousTasks);
+      throw error;
+    }
+  };
 
-    })
-
-
-  }
+  const filteredTasks = (() => {
+    switch (currentFilter) {
+      case "pending":
+        return taskList.filter((task) => !task.done);
+      case "complited":
+        return taskList.filter((task) => task.done);
+      case "all":
+      default:
+        return taskList;
+    }
+  })();
 
   return (
     <main className="w-full h-screen bg-background flex justify-center items-start mt-8">
       <Card className="w-lg p-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center mb-4 gap-4">
+          <BookOpenCheck />
           <CardTitle className="text-2xl">Suas Tarefas</CardTitle>
         </div>
 
@@ -84,20 +98,19 @@ export default function Home() {
         <CardContent>
           <Separator className="mb-4" />
 
-          <div className="flex gap-2">
-            <Badge className="cursor-pointer" variant="default">
-              <List /> Todas
-            </Badge>
-            <Badge className="cursor-pointer" variant="outline">
-              <BadgeX /> Não Finalizadas
-            </Badge>
-            <Badge className="cursor-pointer" variant="outline">
-              <Check /> Concluidas
-            </Badge>
-          </div>
+          <Filter
+            currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
+          />
 
           <div className="mt-4 border-b">
-            {taskList.map((task) => (
+            {taskList.length === 0 && (
+              <p className="text-sm border-t p-2">
+                Você não possui atividades Cadastradas
+              </p>
+            )}
+
+            {filteredTasks.map((task) => (
               <div
                 className="h-14 flex justify-between items-center border-t"
                 key={task._id}
@@ -109,8 +122,9 @@ export default function Home() {
                       : "w-1 h-full bg-red-400"
                   }`}
                 ></div>
-                <p className="flex-1 px-2 text-sm cursor-pointer hover: text-gray-900"
-                onClick={() => handleToggleTask(task._id)}
+                <p
+                  className="flex-1 px-2 text-lg cursor-pointer hover:text-orange-500"
+                  onClick={() => handleToggleTask(task._id)}
                 >
                   {task.tarefa}
                 </p>
@@ -142,7 +156,10 @@ export default function Home() {
           <div className="flex justify-between mt-4">
             <div className="flex gap-2 items-center">
               <ListCheck size={18} />
-              <p className="text-sx">Tarefas Concluídas (3/3)</p>
+              <p className="text-sx">
+                Tarefas Concluídas (
+                {taskList.filter((task) => task.done).length}/{taskList.length})
+              </p>
             </div>
 
             <AlertDialog>
@@ -151,7 +168,7 @@ export default function Home() {
                   <Trash /> Limpar Tarefas Concluídas
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent className="bg-zinc-100 dark:bg-zinc-900">
                 <AlertDialogHeader>
                   <AlertDialogTitle>
                     Tem certeza que deseja excluir x itens?
@@ -174,7 +191,7 @@ export default function Home() {
 
           <div className="flex justify-end items-center gap-2">
             <Sigma size={18} />
-            <p className="text-xs"> 3 tarefas no total </p>
+            <p className="text-xs"> {taskList.length} tarefas no total </p>
           </div>
         </CardContent>
       </Card>

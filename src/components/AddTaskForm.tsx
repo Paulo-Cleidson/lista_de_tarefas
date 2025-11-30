@@ -25,7 +25,7 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
     } else {
       ref.current?.reset();
       setTask("");
-      toast.success("Tarefa adicionada com sucesso!")
+      toast.success("Tarefa inserida com sucesso!")
       if (onTaskAdded) onTaskAdded();
     }
   }
