@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <div className="notfound-container flex flex-col items-center justify-center h-screen text-center px-6">
-
       <div className="notfound-icon-wrapper">
         <Image
           src="/em_construcao.png"
@@ -19,7 +18,8 @@ export default function NotFound() {
 
       <h1 className="notfound-title mt-6">Página não encontrada</h1>
       <p className="notfound-text mt-2 max-w-md">
-        Parece que você tentou acessar uma página que não existe ou foi removida.
+        Parece que você tentou acessar uma página que não existe ou foi
+        removida.
       </p>
 
       <Link

@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lista De Tarefas - Web II
 
-## Getting Started
+## Equipe
+- Paulo Cleidson
+- Ruthe Nobrega
+- Thiago Araujo
 
-First, run the development server:
+## Descrição
+Este projeto é uma aplicação de lista de tarefas desenvolvida para auxiliar usuários na organização de suas atividades diárias. O sistema permite adicionar, visualizar, editar e remover tarefas de forma simples e eficiente, oferecendo uma experiência prática para o acompanhamento de pendências.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+A solução foi criada para resolver o problema comum de perda de controle sobre afazeres, centralizando todas as tarefas em um único ambiente intuitivo e acessível. Com isso, o usuário consegue gerenciar melhor o tempo, manter o foco e aumentar sua produtividade no dia a dia.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologias
+- Next.js 14+ (App Router)
+- MongoDB Atlas & Mongoose
+- HeroUI (NextUI), Shadcn & Tailwind CSS
+- {Biblioteca de Auth usada}
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades
+- [x] Cadastro e Login de Usuários
+- [x] CRUD de {Entidade Principal}
+- [x] Funcionalidade X...
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuração
+Instruções para rodar o projeto localmente:
+1. Clone o repositório
+2. Configure o arquivo `.env` com a STRING DE CONEXÃO DO MONGO.
+3. `npm install`
+4. `npm run dev`
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+[Acesse o projeto aqui](https://link-da-vercel.com)
