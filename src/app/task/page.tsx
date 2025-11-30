@@ -103,8 +103,8 @@ export default function Home() {
   };
 
   return (
-    <main className="w-full h-screen bg-background flex justify-center items-start mt-8">
-      <Card className="w-lg p-4">
+    <main className="w-full h-screen bg-background flex justify-center items-start mt-6">
+      <Card className="w-2xl p-4">
         <div className="flex items-center mb-4 gap-4">
           <BookOpenCheck />
           <CardTitle className="text-2xl">Suas Tarefas</CardTitle>
@@ -213,7 +213,7 @@ export default function Home() {
 
           <div className="h-2 w-full bg-gray-100 mt-4 rounded-md">
             <div
-              className="h-full bg-primary rounded-md"
+              className="h-full bg-green-500 rounded-md"
               style={{
                 width: `${
                   taskList.length === 0
