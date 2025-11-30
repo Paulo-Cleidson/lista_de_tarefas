@@ -7,6 +7,9 @@ import Task from "@/models/task";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { ITask } from "@/types/Task";
+
+type DeleteCompletedResult = ITask[] | { error: string };
 
 export async function registerUser(formData: FormData) {
   const name = formData.get("name") as string;
@@ -129,4 +132,26 @@ export async function updateTaskStatus(taskId: string) {
 
   if (!updatedStatus) return;
   return updatedStatus;
+}
+
+export async function deleteCompletedtasks(): Promise<DeleteCompletedResult> {
+  const session = await getServerSession(authOptions);
+  if (!session) return { error: "Não Autorizado" };
+
+  try {
+    const user = session.user as { id: string };
+    await dbConnect();
+
+    await Task.deleteMany({ done: true, usuarioId: user.id });
+
+    const remainingTasks = await Task.find({ usuarioId: user.id })
+      .lean()
+      .exec();
+
+    const serializedTasks = JSON.parse(JSON.stringify(remainingTasks));
+    return serializedTasks as ITask[];
+  } catch (error) {
+    console.error("Erro ao excluir tarefas:", error);
+    return { error: "Erro interno do servidor ao limpar tarefas." };
+  }
 }
