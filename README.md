@@ -19,7 +19,7 @@ A solução foi criada para resolver o problema comum de perda de controle sobre
 ## Funcionalidades
 - [V] Cadastro e Login de Usuários
 - [v] CRUD de Tarefas
-- [v] Alterar entre os temmas Dark e Light
+- [v] Alterar entre os temas Dark e Light
 - [v] Mudar estado da tarefa para Concluida ou Não Concluída
 
 ## Configuração
