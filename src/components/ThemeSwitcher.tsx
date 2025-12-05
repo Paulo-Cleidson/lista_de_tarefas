@@ -1,15 +1,19 @@
 'use client';
 
 import { useTheme } from "next-themes";
-import { Button } from "./ui/button";
+import { Switch } from "@/components/ui/switch"
 
 export default function ThemeSwitcher() {
-    const {setTheme} = useTheme();
+    const {theme, setTheme} = useTheme();
 
-    return (
-        <div className=" flex justify-end my-3 gap-2">
-            <Button onClick={() => setTheme("light")}>Light</Button> ou{" "}
-            <Button onClick={() => setTheme("dark")}>Dark</Button>
-        </div>
-    );
+
+  return (
+    <div className="flex items-center space-x-2">
+      <Switch 
+        id="theme"
+        checked={theme === "dark"}
+        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+      />
+    </div>
+  )
 }
