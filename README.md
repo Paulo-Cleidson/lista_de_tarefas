@@ -14,12 +14,13 @@ A solução foi criada para resolver o problema comum de perda de controle sobre
 - Next.js 14+ (App Router)
 - MongoDB Atlas & Mongoose
 - HeroUI (NextUI), Shadcn & Tailwind CSS
-- {Biblioteca de Auth usada}
+- Biblioteca de Auth usada: Auth.js
 
 ## Funcionalidades
-- [x] Cadastro e Login de Usuários
-- [x] CRUD de {Entidade Principal}
-- [x] Funcionalidade X...
+- [V] Cadastro e Login de Usuários
+- [v] CRUD de Tarefas
+- [v] Alterar entre os temmas Dark e Light
+- [v] Mudar estado da tarefa para Concluida ou Não Concluída
 
 ## Configuração
 Instruções para rodar o projeto localmente:
