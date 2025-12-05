@@ -11,11 +11,12 @@ export default function Header() {
   const isLoggedIn = status === "authenticated";
 
   return (
-    <header className="px-6 flex items-center justify-between">
+    <header className="px-6 flex items-center justify-between h-16 border-b border-border">
       {isLoggedIn ? (
         <div>
           <Button
-            variant="link"
+            variant="outline"
+            size="sm"
             onClick={() => signOut({ callbackUrl: "/login" })}
             className="text-2xl"
           >
