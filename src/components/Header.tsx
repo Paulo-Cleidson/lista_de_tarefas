@@ -17,7 +17,7 @@ export default function Header() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="text-2xl"
           >
             Sair

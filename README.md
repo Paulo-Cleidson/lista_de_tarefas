@@ -30,4 +30,4 @@ Instruções para rodar o projeto localmente:
 4. `npm run dev`
 
 ## Deploy
-[Acesse o projeto aqui](https://link-da-vercel.com)
+[Acesse o projeto aqui](https://lista-de-tarefas-eight-sage.vercel.app/)
