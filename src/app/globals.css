@@ -76,10 +76,11 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.75 0.183 55.934);
+  --gradient-orange: linear-gradient(to bottom, #7a2b00 0%, #c2410c 50%, #ea580c 100%);
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(19.864% 0.02794 283.564);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
@@ -110,6 +111,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.408 0.123 38.172);
+  --gradient-orange: linear-gradient(to bottom, #140700 0%, #2c0e01 50%, #662907 100%);
 }
 
 
@@ -122,6 +124,13 @@
   }
 }
 
+@layer utilities {
+  .bg-gradient-orange {
+    background-image: var(--gradient-orange);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
 
 /* Estilização da página 404 costumizada */
 .notfound-container {

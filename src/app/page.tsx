@@ -12,14 +12,9 @@ export default async function Home() {
   }
 
   return (
-    <div
-      className="
-    flex h-screen w-full items-center justify-center bg-linear-to-b from-orange-900
-    via-orange-700 to-orange-600 px-4
-    "
-    >
-      <div className="w-full max-w-md rounded-2xl bg-white/90 p-10 shadow-2xl backdrop-blur-md">
-        <h1 className="text-4xl font-bold text-gray-900 text-center">
+    <div className="flex h-screen w-full items-center justify-center px-4 bg-gradient-orange">
+      <div className="w-full max-w-md border rounded-2xl bg-background p-10 shadow-2xl backdrop-blur-md">
+        <h1 className="text-4xl font-bold text-foreground text-center">
           Lista de Tarefas
         </h1>
 

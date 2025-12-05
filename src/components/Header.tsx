@@ -30,7 +30,7 @@ export default function Header() {
       {isLoggedIn ? (
         <div className="flex gap-3">
           <CircleUserRound className="text-primary" />
-          <CardTitle className="text-base">
+          <CardTitle className="text-lg">
             Bem Vindo, {session?.user?.name || "Usuário"}
           </CardTitle>
         </div>
